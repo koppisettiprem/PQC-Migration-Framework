@@ -10,7 +10,9 @@ def get_db_connection():
         port=int(os.environ.get("DB_PORT", 3306)),
         user=os.environ.get("DB_USER", "root"),
         password=os.environ.get("DB_PASSWORD", ""),
-        database=os.environ.get("DB_NAME", "pqc_framework")
+        database=os.environ.get("DB_NAME", "pqc_framework"),
+        ssl_disabled=False,
+        ssl_verify_cert=False
     )
 
 
