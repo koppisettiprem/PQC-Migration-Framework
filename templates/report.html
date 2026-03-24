@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Detailed Scan Report</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+
+.report-title{
+margin-bottom:20px;
+}
+
+.report-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.report-card{
+padding:22px;
+transition:.2s;
+}
+
+.report-card:hover{
+transform:translateY(-3px);
+box-shadow:0 0 12px rgba(99,102,241,0.5);
+}
+
+.label{
+font-size:13px;
+opacity:.8;
+margin-bottom:6px;
+}
+
+.value{
+font-size:17px;
+font-weight:600;
+}
+
+.risk-critical{color:#ef4444;font-weight:600;}
+.risk-high{color:#f97316;font-weight:600;}
+.risk-medium{color:#eab308;font-weight:600;}
+.risk-low{color:#22c55e;font-weight:600;}
+
+.pdf-btn{
+display:inline-block;
+padding:10px 16px;
+background:#2563eb;
+color:white;
+border-radius:6px;
+text-decoration:none;
+font-weight:600;
+}
+
+.pdf-btn:hover{
+background:#1d4ed8;
+box-shadow:0 0 10px rgba(37,99,235,.6);
+}
+
+.section-title{
+margin-top:40px;
+margin-bottom:15px;
+}
+
+.readiness-box{
+padding:25px;
+}
+
+.sim-table{
+width:100%;
+border-collapse:collapse;
+text-align:center;
+}
+
+.sim-table th{
+background:#1e293b;
+padding:12px;
+}
+
+.sim-table td{
+padding:14px;
+border-bottom:1px solid #334155;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="title">
+Post-Quantum Migration Framework
+</div>
+
+<div class="nav-links">
+<a href="/dashboard">Dashboard</a>
+<a href="/scan_page">Scan</a>
+<a href="/history">History</a>
+<a href="/">Logout</a>
+</div>
+
+</div>
+
+
+<div class="container animate__animated animate__fadeIn">
+
+<h2 class="report-title">
+Detailed Scan Report
+</h2>
+
+
+<!-- PDF DOWNLOAD BUTTON -->
+
+<div style="margin-bottom:25px">
+
+<a href="/report/{{scan.id}}/pdf" class="pdf-btn">
+
+Download PDF Report
+
+</a>
+
+</div>
+
+
+<!-- MAIN REPORT GRID -->
+
+<div class="report-grid">
+
+<div class="card report-card">
+<div class="label">Target</div>
+<div class="value">{{ scan.domain }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Algorithm</div>
+<div class="value">{{ scan.algorithm }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Key Size</div>
+<div class="value">{{ scan.key_size }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">TLS Version</div>
+<div class="value">{{ scan.tls_version }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Cipher Suite</div>
+<div class="value">{{ scan.cipher_suite }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Risk Level</div>
+
+<div class="value
+{% if scan.risk_level == 'CRITICAL' %}risk-critical
+{% elif scan.risk_level == 'HIGH' %}risk-high
+{% elif scan.risk_level == 'MEDIUM' %}risk-medium
+{% else %}risk-low
+{% endif %}
+">
+
+{{ scan.risk_level }}
+
+</div>
+
+</div>
+
+<div class="card report-card">
+<div class="label">Quantum Threat</div>
+<div class="value">{{ scan.quantum_threat }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Impact</div>
+<div class="value">{{ scan.impact }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Scanned At</div>
+<div class="value">{{ scan.scanned_at }}</div>
+</div>
+
+</div>
+
+
+<!-- MIGRATION PLAN -->
+
+<h2 class="section-title">
+Post-Quantum Migration Strategy
+</h2>
+
+<div class="report-grid">
+
+<div class="card report-card">
+<div class="label">Recommended Path</div>
+<div class="value">{{ scan.recommended_path }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Next Step</div>
+<div class="value">{{ scan.next_step }}</div>
+</div>
+
+<div class="card report-card">
+<div class="label">Final Goal</div>
+<div class="value">{{ scan.final_goal }}</div>
+</div>
+
+</div>
+
+
+<!-- QUANTUM READINESS -->
+
+<h2 class="section-title">
+Quantum Readiness Assessment
+</h2>
+
+<div class="card readiness-box">
+
+<p style="font-size:20px;font-weight:600">
+
+Readiness Score:
+{{ readiness.score }} / 100
+
+</p>
+
+<p style="font-weight:600">
+
+Migration Urgency:
+
+<span
+style="
+{% if readiness.urgency == 'CRITICAL' %}color:#ef4444;
+{% elif readiness.urgency == 'HIGH' %}color:#f97316;
+{% elif readiness.urgency == 'MEDIUM' %}color:#eab308;
+{% else %}color:#22c55e;
+{% endif %}
+"
+>
+
+{{ readiness.urgency }}
+
+</span>
+
+</p>
+
+
+<ul style="margin-top:10px">
+
+{% for reason in readiness.reasons %}
+
+<li>{{ reason }}</li>
+
+{% endfor %}
+
+</ul>
+
+</div>
+
+
+<!-- MIGRATION SIMULATION -->
+
+<h2 class="section-title">
+Migration Simulation
+</h2>
+
+<div class="card">
+
+<table class="sim-table">
+
+<thead>
+
+<tr>
+
+<th>Stage</th>
+<th>Algorithm</th>
+<th>Risk Level</th>
+<th>Key Size</th>
+<th>Security Model</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td><strong>Current</strong></td>
+<td>{{ simulation.current.algorithm }}</td>
+<td style="color:#ef4444">{{ simulation.current.risk }}</td>
+<td>{{ simulation.current.key_size }}</td>
+<td>{{ simulation.current.security_model }}</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Hybrid</strong></td>
+<td>{{ simulation.hybrid.algorithm }}</td>
+<td style="color:#f97316">{{ simulation.hybrid.risk }}</td>
+<td>{{ simulation.hybrid.key_size }}</td>
+<td>{{ simulation.hybrid.security_model }}</td>
+
+</tr>
+
+<tr>
+
+<td><strong>Full PQC</strong></td>
+<td>{{ simulation.full_pqc.algorithm }}</td>
+<td style="color:#22c55e">{{ simulation.full_pqc.risk }}</td>
+<td>{{ simulation.full_pqc.key_size }}</td>
+<td>{{ simulation.full_pqc.security_model }}</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Security Report</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+
+.report-title{
+margin-bottom:25px;
+}
+
+.result-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.result-card{
+padding:22px;
+transition:.2s;
+}
+
+.result-card:hover{
+transform:translateY(-4px);
+box-shadow:0 0 15px rgba(99,102,241,0.5);
+}
+
+.label{
+font-size:13px;
+opacity:.8;
+margin-bottom:6px;
+}
+
+.value{
+font-size:18px;
+font-weight:600;
+}
+
+.risk-critical{color:#ef4444;font-weight:600;}
+.risk-high{color:#f97316;font-weight:600;}
+.risk-medium{color:#eab308;font-weight:600;}
+.risk-low{color:#22c55e;font-weight:600;}
+
+.migration-btn{
+padding:12px 18px;
+background:#3b82f6;
+border:none;
+border-radius:6px;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+.migration-btn:hover{
+background:#2563eb;
+box-shadow:0 0 12px rgba(59,130,246,0.7);
+}
+
+.migration-section{
+margin-top:35px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="title">
+Post-Quantum Migration Framework
+</div>
+
+<div class="nav-links">
+<a href="/dashboard">Dashboard</a>
+<a href="/scan_page">New Scan</a>
+<a href="/history">History</a>
+<a href="/">Logout</a>
+</div>
+
+</div>
+
+
+<div class="container animate__animated animate__fadeIn">
+
+<h2 class="report-title">
+Cryptographic Security Assessment
+</h2>
+
+
+<!-- MAIN RESULT GRID -->
+
+<div class="result-grid">
+
+<div class="card result-card">
+<div class="label">Algorithm</div>
+<div class="value">{{data.algorithm}}</div>
+</div>
+
+<div class="card result-card">
+<div class="label">Key Size</div>
+<div class="value">{{data.key_size}}</div>
+</div>
+
+<div class="card result-card">
+<div class="label">TLS Version</div>
+<div class="value">{{data.tls_version}}</div>
+</div>
+
+<div class="card result-card">
+<div class="label">Cipher Suite</div>
+<div class="value">{{data.cipher_suite}}</div>
+</div>
+
+<div class="card result-card">
+<div class="label">Risk Level</div>
+
+<div class="value
+{% if data.risk_level == 'CRITICAL' %}risk-critical
+{% elif data.risk_level == 'HIGH' %}risk-high
+{% elif data.risk_level == 'MEDIUM' %}risk-medium
+{% else %}risk-low
+{% endif %}
+">
+
+{{data.risk_level}}
+
+</div>
+
+</div>
+
+<div class="card result-card">
+<div class="label">Risk Score</div>
+<div class="value">{{data.risk_score}}</div>
+</div>
+
+</div>
+
+
+<br>
+
+<!-- MIGRATION BUTTON -->
+
+<button class="migration-btn"
+onclick="toggleMigration()">
+
+View Post-Quantum Migration Roadmap
+
+</button>
+
+
+<!-- MIGRATION SECTION -->
+
+<div id="migrationSection"
+class="migration-section"
+style="display:none">
+
+<div class="result-grid">
+
+<div class="card result-card">
+<div class="label">Recommended Path</div>
+<div class="value">{{data.recommended_path}}</div>
+</div>
+
+<div class="card result-card">
+<div class="label">Next Step</div>
+<div class="value">{{data.next_step}}</div>
+</div>
+
+<div class="card result-card">
+<div class="label">Final Goal</div>
+<div class="value">{{data.final_goal}}</div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function toggleMigration(){
+
+var section=document.getElementById("migrationSection")
+
+section.style.display =
+section.style.display==="none" ? "block":"none"
+
+}
+
+</script>
+
+</body>
+</html>

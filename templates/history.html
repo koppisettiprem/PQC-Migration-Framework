@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Scan History</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+<style>
+
+.history-card{
+overflow-x:auto;
+padding:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th{
+text-align:left;
+padding:14px 12px;
+background:#1e293b;
+font-weight:600;
+border-bottom:2px solid #334155;
+}
+
+td{
+padding:14px 12px;
+border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+tr:hover{
+background:rgba(255,255,255,0.05);
+transition:.2s;
+}
+
+.risk-critical{
+color:#ef4444;
+font-weight:600;
+}
+
+.risk-high{
+color:#f97316;
+font-weight:600;
+}
+
+.risk-medium{
+color:#eab308;
+font-weight:600;
+}
+
+.risk-low{
+color:#22c55e;
+font-weight:600;
+}
+
+.view-btn{
+background:#3b82f6;
+padding:6px 12px;
+border-radius:6px;
+color:white;
+text-decoration:none;
+font-size:13px;
+}
+
+.view-btn:hover{
+background:#2563eb;
+}
+
+.history-title{
+margin-bottom:8px;
+}
+
+.sub-text{
+color:#94a3b8;
+font-size:14px;
+margin-bottom:20px;
+}
+
+.badge{
+padding:3px 8px;
+border-radius:6px;
+font-size:12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="title">
+Post-Quantum Migration Framework
+</div>
+
+<div class="nav-links">
+<a href="/dashboard">Dashboard</a>
+<a href="/scan_page">Scan</a>
+<a href="/history">History</a>
+<a href="/">Logout</a>
+</div>
+
+</div>
+
+
+<div class="container animate__animated animate__fadeIn">
+
+<h2 class="history-title">
+Scan History
+</h2>
+
+<p class="sub-text">
+Previously analyzed TLS configurations and quantum risk assessments.
+</p>
+
+
+<div class="card history-card">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Domain</th>
+<th>Algorithm</th>
+<th>TLS Version</th>
+<th>Risk Level</th>
+<th>Scanned At</th>
+<th>Report</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for scan in scans %}
+
+<tr>
+
+<td>
+<strong>{{scan.domain}}</strong>
+</td>
+
+<td>
+{{scan.algorithm}}
+</td>
+
+<td>
+{{scan.tls_version}}
+</td>
+
+
+<td class="
+{% if scan.risk_level == 'CRITICAL' %}risk-critical
+{% elif scan.risk_level == 'HIGH' %}risk-high
+{% elif scan.risk_level == 'MEDIUM' %}risk-medium
+{% else %}risk-low
+{% endif %}
+">
+
+{{scan.risk_level}}
+
+</td>
+
+
+<td>
+{{scan.scanned_at}}
+</td>
+
+
+<td>
+
+<a href="/report/{{scan.id}}" class="view-btn">
+View Report
+</a>
+
+</td>
+
+</tr>
+
+{% else %}
+
+<tr>
+
+<td colspan="6" style="text-align:center;padding:25px">
+
+No scan history available.
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

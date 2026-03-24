@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>TLS Security Scan</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+<style>
+
+.scan-container{
+max-width:700px;
+margin:auto;
+text-align:center;
+}
+
+.scan-box{
+padding:30px;
+}
+
+.scan-status{
+margin-top:20px;
+display:none;
+text-align:left;
+}
+
+.step{
+margin:8px 0;
+opacity:.6;
+}
+
+.active{
+opacity:1;
+color:#22c55e;
+}
+
+.progress{
+height:6px;
+background:#1e293b;
+margin-top:15px;
+border-radius:6px;
+overflow:hidden;
+}
+
+.bar{
+height:6px;
+background:#3b82f6;
+width:0%;
+transition:width .5s;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="navbar">
+
+<div class="title">Post-Quantum Migration Framework</div>
+
+<div class="nav-links">
+<a href="/dashboard">Dashboard</a>
+<a href="/scan_page">Scan</a>
+<a href="/history">History</a>
+<a href="/">Logout</a>
+</div>
+
+</div>
+
+
+<div class="container scan-container">
+
+<h2>Run TLS Security Analysis</h2>
+
+<div class="card scan-box">
+
+<form id="scanForm" method="post" action="/scan">
+
+<input name="host" placeholder="example.com" required>
+<br><br>
+
+<input name="port" value="443" required>
+<br><br>
+
+<button type="button" onclick="startScan()">
+Start Security Scan
+</button>
+
+</form>
+
+
+<div class="scan-status" id="scanStatus">
+
+<p class="step" id="s1">Connecting to target server...</p>
+<p class="step" id="s2">Performing TLS handshake...</p>
+<p class="step" id="s3">Extracting certificate metadata...</p>
+<p class="step" id="s4">Detecting cryptographic algorithms...</p>
+<p class="step" id="s5">Evaluating quantum security risks...</p>
+<p class="step" id="s6">Generating PQC migration roadmap...</p>
+
+<div class="progress">
+<div class="bar" id="bar"></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function startScan(){
+
+document.getElementById("scanStatus").style.display="block"
+
+let steps=["s1","s2","s3","s4","s5","s6"]
+let bar=document.getElementById("bar")
+
+let i=0
+
+function run(){
+
+if(i<steps.length){
+
+document.getElementById(steps[i]).classList.add("active")
+
+bar.style.width=((i+1)/steps.length*100)+"%"
+
+i++
+
+setTimeout(run,500)
+
+}else{
+
+document.getElementById("scanForm").submit()
+
+}
+
+}
+
+run()
+
+}
+
+</script>
+
+</body>
+</html>
